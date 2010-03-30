@@ -16,7 +16,9 @@ int main(int argc, char **argv)
 
 	char *answer = solve(n);
 	puts(answer);
-	free(answer);
+
+        if (strcmp(answer, FAIL))
+          free(answer);
 
 	return 0;
 }

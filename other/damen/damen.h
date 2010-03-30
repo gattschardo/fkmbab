@@ -10,7 +10,7 @@
 
 #define QUEEN ('*')
 #define EMPTY ('.')
-#define FAIL ("No solution");
+#define FAIL ("No solution")
 
 typedef struct {
 	int n;
