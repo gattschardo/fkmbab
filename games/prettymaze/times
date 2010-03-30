@@ -1,0 +1,6 @@
+Benchmark result for different optimization levels:
+
+	with O0	with Os	with O1	with O2	with O3
+real	33.324s	33.366s	30.309s	30.214s	29.313s
+user	33.218s	33.222s	30.218s	30.142s	29.178s
+sys	0.104s	0.144s	0.096s	0.076s	0.136s 

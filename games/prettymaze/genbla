@@ -1,0 +1,58 @@
+Gedanken zum Labyrinthe generieren per Seed:
+--------------------------------------------
+
+Es gibt vier Mögliche Felder (0-3), daher lohnt es sich den Seed ins
+Vierersystem umzuwandeln, so dass jede Ziffer die wir daraus entnehmen direkt
+verwendet werden kann.
+
+Um sinnvolle Labyrinthe zu erhalten, in denen alle Wege auch begehbar, das
+heißt untereinander verbunden, sind werden die Wege nummeriert, beginnend bei
+1. Beim setzen eines neuen Feldes wird zuerst überprüft, ob das
+darüberliegende Feld eine Verbindung braucht (in diesem Fall hätte seine
+Wegnummer ein negatives Vorzeichen erhalten).
+
+Das negative Vorzeichen wird auf das vorherige Feld gesetzt, wenn das aktuelle
+Feld keine Verbindung zu ihm hat. In diesem Fall beginnt das aktuelle Feld mit
+einer neuen Wegnummer.
+
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|1 *|2 2 2 *|3 3 3 3 3 3 3 3 3 3 3 3 3 3 *|4 4 4 *|5|
++ + + +-+-+-+-+-+-+-+-+-+ +-+-+ +-+-+-+ + + + + + +*+
+|1|*|2 2 2 *|6 *|7 *|8 *|3|9|-10|-11|-12|3|4|5      |
++ + + + + + + + + + + + +*+*+ + + + + + +*+*+ + + + +
+|                                                   |
++ + + + + + + + + + + + + + + + + + + + + + + + + + +
+|                                                   |
++ + + + + + + + + + + + + + + + + + + + + + + + + + +
+|                                                   |
++ + + + + + + + + + + + + + + + + + + + + + + + + + +
+|                                                   |
++ + + + + + + + + + + + + + + + + + + + + + + + + + +
+|                                                   |
++ + + + + + + + + + + + + + + + + + + + + + + + + + +
+|                                                   |
++ + + + + + + + + + + + + + + + + + + + + + + + + + +
+|                                                   |
++ + + + + + + + + + + + + + + + + + + + + + + + + + +
+|                                                   |
++ + + + + + + + + + + + + + + + + + + + + + + + + + +
+|                                                   |
++ + + + + + + + + + + + + + + + + + + + + + + + + + +
+|                                                   |
++ + + + + + + + + + + + + + + + + + + + + + + + + + +
+|                                                   |
++ + + + + + + + + + + + + + + + + + + + + + + + + + +
+|                                                   |
++ + + + + + + + + + + + + + + + + + + + + + + + + + +
+|                                                   |
++ + + + + + + + + + + + + + + + + + + + + + + + + + +
+|                                                   |
++ + + + + + + + + + + + + + + + + + + + + + + + + + +
+|                                                   |
++ + + + + + + + + + + + + + + + + + + + + + + + + + +
+|                                                   |
++ + + + + + + + + + + + + + + + + + + + + + + + + + +
+|                                                   |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+vim: tw=78:

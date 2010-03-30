@@ -1,0 +1,110 @@
+FkMaze GUi Plan:
+----------------
+
+- Der Endabschnitt hat eine minimale Breite von drei Linen _.
+
+- Jeder Abschnitt hat eine Breite von 3 Füllfeldern @ plus einem Linienfeld |
+  jeweils am linken und rechten Rand. Das ergibt eine Breite von 8 Zeichen pro
+  Abschnitt.
+
+- Der Endabschnitt hat eine minimale Höhe von drei Linien |.
+
+- Jeder Abschnitt hat die minimale Höhe von drei Linien \ bzw / oben, drei
+  Linien / bzw \ unten plus einer Grundlinie _ darüber. Das ergibt eine Höhe
+  von 7 Zeichen pro Abschnitt.
+
+Minimale Darstellung (1 Abschnitt + Endabschnitt)
+-------------------------------------------------
+
+\         / |           / | \           |             | \         /
+ \       /  |          /  |  \          |             |  \       /
+  \ ___ /   | ___ ___ /   |   \ ___ ___ | ___ ___ ___ |   \     /
+   |   |    |    |   |    |    |   |    |    |   |    |    |   |
+   |   |    |    |   |    |    |   |    |    |   |    |    |   |
+   |___|    | ___|___|    |    |___|___ | ___|___|___ |    |___|
+  /     \   |         \   |   /         |             |   /     \
+ /       \  |          \  |  /          |             |  /       \
+/         \ |           \ | /           |             | /         \
+l zu,  r zu | l auf, r zu | l zu, r auf | l auf, r auf| hinten auf
+
+(Es können natürlich auch links und rechts die Enden noch offen sein.)
+
+Ansichtsberechnung:
+-------------------
+
+- Falls das Terminal kleiner als 10x11 (Ze*Sp) ist, kannst du gleich aufhören.
+  So kleine Dinger sind einfach nicht zu gebrauchen.
+
+- Prüfe ob die Zahl der Spalten geteilt durch 8 kleiner als die Zahl der Zeilen
+  geteilt durch 7 ist. In diesem Fall müssen die Folgenden Berechnungen in
+  anderer Reihenfolge durchgeführt werden. Das soll uns aber fürs erste nicht
+  kümmern, melde einfach einen Fehler und beende das Programm.
+  
+- Ziehe 1 von der Höhe deines Terminals ab. Diese Zeile dient als Statuszeile
+  am unteren Bildschirmrand.
+  
+- Teile die Zahl der verbleibendenden Zeilen durch 7. Dies ergibt die Anzahl
+  der darstellbaren Abschnitte. Für jeden von ihnen werden drei Zeilen
+  oberhalb sowie vier Zeilen unterhalb der Endzeile benötigt.
+
+- Merke dir den Rest der Division. Dieser Rest wird als Höhe des Endabschnitts
+  verwendet.
+
+- Teile nun die Zahl der Spalten durch 8. Wahrscheinlich ergibt sich eine
+  größere Zahl an zeichenbaren Abschnitten, was aber weiter nicht schlimm ist.
+  Merke dir auch den Rest dieser Division. Er wird als Breite des
+  Endabschnitts verwendet.
+
+Zeichenpositionen:
+------------------
+
+- Die Senkrechte Trennlinie besteht aus Pipes |. Links wird sie gezeichnet in
+  (Spalte 0 + 4 * Nummer des momentanen Abschnitts) von (Oberkante + 3 *
+  Nummer des momentanen Abschnitts) bis (Unterkante - 1 - 3 * Nummer des
+  momentanen Abschnitts). Rechts das Gleiche, nur die Spalte ist (Spaltenzahl
+  - 4 * Nummer des momentanen Abschnitts).
+
+- Die Parallele Wand besteht links oben aus Backslashes \, links unten aus
+  Slashes /. Rechts genaus umgekehrt. Links wird sie gezeichnet von 
+
+Zeichenanweisungen (für simple Darstellung):
+--------------------------------------------
+
+- Alle senkrechten Abschnittstrennlinien können aus Prinzip immer gezeichnet
+  werden (diese Annahme gibt Probleme bei einem Labyrinth mit "Luftlöchern").
+
+- Zeichne die nächste frontale Wand, die deine Sicht blockiert ein. Sie
+  bestimmt die Sichtweite für dieses Bild, speichere diese. Gibt es keine
+  solche Wand, so zeichne mit der maximalen Sichtweite.
+
+- Betrachte zunächst die linke Seite, von außen nach innen. Befindet sich dort
+  eine parallel zu dir verlaufende Wand, so zeichne sie mit \ bzw / ein. Falls
+  nicht, bestimme für die sich ergebende Öffnung die nächste frontale Wand,
+  die die Sicht blockiert und zeichne sie mit _ ein.  Wandere nun einen
+  Abschnitt weiter nach innen, so lange bis du die maximale Sichtweite für
+  dieses Bild erreicht hast.
+
+- Verfahre genauso mit der rechten Seite.
+
+Gedankenspielzeug:
+------------------
+
+    +-+-+-+-+-+-+-+    +-+-+-+-+-+-+-+    +-+-+-+-+-+-+-+    +-+-+-+-+-+-+-+
+    |o|       |   |    |v|       |   |    |=|       |   |    | |       |   |
+    + +-+-+-+ + +-+    +|+-+-+-+ + +-+    +|+-+-+-+ + +-+    + +-+-+-+ + +-+
+    |     |   |   |    |#-=  |   |   |    |>-#-#|   |   |    |=-v-=|   |   |
+    +-+ +-+ +-+-+ +    +-+|+-+ +-+-+ +    +-+|+-+ +-+-+ +    +-+|+-+ +-+-+ +
+    |x|         | |    |x|=        | |    |x|=-=-=-'  | |    |x|#-=      | |
+    + +-+-+-+ +-+ +    + +-+-+-+ +-+ +    + +-+-+-+ +-+ +    + +-+-+-+ +-+ +
+    |             |    |             |    |             |    |             |
+    +-+-+-+-+-+-+-+    +-+-+-+-+-+-+-+    +-+-+-+-+-+-+-+    +-+-+-+-+-+-+-+
+
+    +-+-+-+-+-+-+-+    +-+-+-+-+-+-+-+    +-+-+-+-+-+-+-+    +-+-+-+-+-+-+-+
+    | |       |   |    | |       |   |    | |       |   |    | |       |   |
+    + +-+-+-+ + +-+    + +-+-+-+ + +-+    + +-+-+-+ + +-+    + +-+-+-+ + +-+
+    |  =-=|=-=|   |    |     |   |   |    |     |   |   |    |     |   |   |
+    +-+|+-+|+-+-+ +    +-+ +-+ +-+-+ +    +-+ +-+ +-+-+ +    +-+ +-+ +-+-+ +
+    |x|>-#-#-#-'| |    |x|    =-v-=| |    |x|=-=-=-=  | |    |#|         | |
+    + +-+-+-+|+-+ +    + +-+-+-+|+-+ +    + +-+-+-+|+-+ +    +|+-+-+-+ +-+ +
+    |        =-'  |    |      =-#-=  |    |'-#-#-#-<    |    |^-=          |
+    +-+-+-+-+-+-+-+    +-+-+-+-+-+-+-+    +-+-+-+-+-+-+-+    +-+-+-+-+-+-+-+
