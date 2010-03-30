@@ -1,1 +1,4 @@
 This is a simple maze game, just make and run ./prettymaze
+
+You may want to have a look at fkmbla and genbla in doc/ to understand some
+concepts (knowing German might help, too).

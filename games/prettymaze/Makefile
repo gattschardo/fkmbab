@@ -4,7 +4,7 @@
 #CFLAGS := -Wall -Wextra -march=native
 CFLAGS := -Wall -Wextra -ggdb #-pg --coverage
 
-OBJS := stdio-dfuncs.o nc-dfuncs.o pmt.o nct.o st.o
+OBJS := stdio-dfuncs.o nc-dfuncs.o pmt.o nct.o st.o prettymaze.o
 programs := pmtest nctest sgtest ripoff prettymaze
 
 # rules follow
@@ -48,7 +48,6 @@ prettymaze.o: prettymaze.c
 # CLEAN:
 .PHONY: clean
 clean:
-	$(RM) $(OBJS) $(programs)
-	$(RM) *.gcda *.gcno
+	$(RM) $(OBJS) $(programs) *.gcda *.gcno gmon.out *.profile
 
 # vim: set nodigraph:
