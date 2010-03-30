@@ -1,0 +1,9 @@
+These are some things that will work on the linux framebuffer device.  fbtest
+only draws some colors to prove that it works, fhashira is a game that you can
+actually play:
+
+$ fhashira [blocksize] [left] 2> /dev/null # assuming bash for redirection
+
+redirecting stderr is not a must, but hardly recommended, blocksize tells how
+many pixels a block shall be wide and left tells how many pixels from the left
+edge of the screen you want to start fhashira to display it's board.
