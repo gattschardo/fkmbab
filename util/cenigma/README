@@ -1,0 +1,20 @@
+enigma
+------
+
+To build the enigma run
+
+$ make
+
+in this directory.  Execute
+
+$ ./bin/enigma
+
+to run the enigma, use the -h switch for some brief usage information.
+Executing
+
+$ make clean
+
+will remove the enigma and all object files (plus anything else you may have
+created in the bin directory).  the configuration of the enigma can be changed
+by modifying .enigmarc (see the end of src/main.c for more info on the syntax
+of this file)
