@@ -201,11 +201,12 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-EXTRA_DIST = include/enigma/main.h include/enigma/enigma.h \
-	include/enigma/patchboard.h include/enigma/reflector.h \
-	include/enigma/rotor.h include/enigma/util.h
+EXTRA_DIST = autoconf/config.rpath m4/ChangeLog include/enigma/main.h \
+	include/enigma/enigma.h include/enigma/patchboard.h \
+	include/enigma/reflector.h include/enigma/rotor.h \
+	include/enigma/util.h
 dist_data_DATA = share/enigmaconf.example
-AM_CPPFLAGS = -I$(srcdir)/include
+AM_CPPFLAGS = -I$(srcdir)/include -ansi
 enigma_SOURCES = \
 	src/enigma/main.c	\
 	src/enigma/enigma.c	\

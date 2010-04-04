@@ -10,10 +10,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "gettext.h"
-
 /* global defines */
-#define _(string) gettext(string)
+#define _(string) (string)
 
 #define DEFALPHABET ("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 #define DEFPATCHBOARD ("JWULCMNOHPQZYXIRADKEGVBTSF")

@@ -207,13 +207,13 @@ char *eat_space(char *p)
 
 void usage(const char *progname)
 {
-	printf(_("Usage: %s [-d] [-u] [-h] [-c configfile] [-o outfile]"
-			" [file1] [...] [fileN]\n", progname));
-	puts(_("Where:\n"
+	printf("Usage: %s [-d] [-u] [-h] [-c configfile] [-o outfile]"
+			" [file1] [...] [fileN]\n", progname);
+	puts("Where:\n"
 			"-d\tprint debug information\n"
 			"-u\tconvert all lower case characters to upper case\n"
 			"-h\tprint this help and exit\n"
-			"-o\twrite output to file"));
+			"-o\twrite output to file");
 	printf(_("-c\tread enigma configuration from configfile (default %s)\n"),
 			DEFRCFILE);
 
