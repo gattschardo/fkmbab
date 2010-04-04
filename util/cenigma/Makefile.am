@@ -8,4 +8,4 @@ include src/Rules.am
 
 include include/Rules.am
 
-include var/Rules.am
+include share/Rules.am

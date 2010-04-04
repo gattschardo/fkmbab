@@ -37,8 +37,8 @@ bin_PROGRAMS = enigma$(EXEEXT)
 DIST_COMMON = README $(am__configure_deps) $(dist_data_DATA) \
 	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(srcdir)/include/Rules.am $(srcdir)/include/enigma/Rules.am \
-	$(srcdir)/src/Rules.am $(srcdir)/src/enigma/Rules.am \
-	$(srcdir)/var/Rules.am $(top_srcdir)/configure \
+	$(srcdir)/share/Rules.am $(srcdir)/src/Rules.am \
+	$(srcdir)/src/enigma/Rules.am $(top_srcdir)/configure \
 	autoconf/depcomp autoconf/install-sh autoconf/missing
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -61,10 +61,25 @@ DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/autoconf/depcomp
 am__depfiles_maybe = depfiles
 am__mv = mv -f
+AM_V_lt = $(am__v_lt_$(V))
+am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
+am__v_lt_0 = --silent
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+AM_V_CC = $(am__v_CC_$(V))
+am__v_CC_ = $(am__v_CC_$(AM_DEFAULT_VERBOSITY))
+am__v_CC_0 = @echo "  CC    " $@;
+AM_V_at = $(am__v_at_$(V))
+am__v_at_ = $(am__v_at_$(AM_DEFAULT_VERBOSITY))
+am__v_at_0 = @
 CCLD = $(CC)
 LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
+AM_V_CCLD = $(am__v_CCLD_$(V))
+am__v_CCLD_ = $(am__v_CCLD_$(AM_DEFAULT_VERBOSITY))
+am__v_CCLD_0 = @echo "  CCLD  " $@;
+AM_V_GEN = $(am__v_GEN_$(V))
+am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))
+am__v_GEN_0 = @echo "  GEN   " $@;
 SOURCES = $(enigma_SOURCES)
 DIST_SOURCES = $(enigma_SOURCES)
 am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
@@ -104,6 +119,7 @@ distuninstallcheck_listfiles = find . -type f -print
 distcleancheck_listfiles = find . -type f -print
 ACLOCAL = @ACLOCAL@
 AMTAR = @AMTAR@
+AM_DEFAULT_VERBOSITY = @AM_DEFAULT_VERBOSITY@
 AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
@@ -188,7 +204,7 @@ top_srcdir = @top_srcdir@
 EXTRA_DIST = include/enigma/main.h include/enigma/enigma.h \
 	include/enigma/patchboard.h include/enigma/reflector.h \
 	include/enigma/rotor.h include/enigma/util.h
-dist_data_DATA = var/enigmaconf.example
+dist_data_DATA = share/enigmaconf.example
 AM_CPPFLAGS = -I$(srcdir)/include
 enigma_SOURCES = \
 	src/enigma/main.c	\
@@ -204,7 +220,7 @@ all: all-am
 .SUFFIXES: .c .o .obj
 am--refresh:
 	@:
-$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(srcdir)/src/Rules.am $(srcdir)/src/enigma/Rules.am $(srcdir)/include/Rules.am $(srcdir)/include/enigma/Rules.am $(srcdir)/var/Rules.am $(am__configure_deps)
+$(srcdir)/Makefile.in:  $(srcdir)/Makefile.am $(srcdir)/src/Rules.am $(srcdir)/src/enigma/Rules.am $(srcdir)/include/Rules.am $(srcdir)/include/enigma/Rules.am $(srcdir)/share/Rules.am $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
 	    *$$dep*) \
@@ -275,7 +291,7 @@ clean-binPROGRAMS:
 	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
 enigma$(EXEEXT): $(enigma_OBJECTS) $(enigma_DEPENDENCIES) 
 	@rm -f enigma$(EXEEXT)
-	$(LINK) $(enigma_OBJECTS) $(enigma_LDADD) $(LIBS)
+	$(AM_V_CCLD)$(LINK) $(enigma_OBJECTS) $(enigma_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -291,99 +307,113 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/util.Po@am__quote@
 
 .c.o:
-@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(COMPILE) -c $<
 
 .c.obj:
-@am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(COMPILE) -c `$(CYGPATH_W) '$<'`
 
 main.o: src/enigma/main.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT main.o -MD -MP -MF $(DEPDIR)/main.Tpo -c -o main.o `test -f 'src/enigma/main.c' || echo '$(srcdir)/'`src/enigma/main.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/main.Tpo $(DEPDIR)/main.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT main.o -MD -MP -MF $(DEPDIR)/main.Tpo -c -o main.o `test -f 'src/enigma/main.c' || echo '$(srcdir)/'`src/enigma/main.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/main.Tpo $(DEPDIR)/main.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='src/enigma/main.c' object='main.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o main.o `test -f 'src/enigma/main.c' || echo '$(srcdir)/'`src/enigma/main.c
 
 main.obj: src/enigma/main.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT main.obj -MD -MP -MF $(DEPDIR)/main.Tpo -c -o main.obj `if test -f 'src/enigma/main.c'; then $(CYGPATH_W) 'src/enigma/main.c'; else $(CYGPATH_W) '$(srcdir)/src/enigma/main.c'; fi`
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/main.Tpo $(DEPDIR)/main.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT main.obj -MD -MP -MF $(DEPDIR)/main.Tpo -c -o main.obj `if test -f 'src/enigma/main.c'; then $(CYGPATH_W) 'src/enigma/main.c'; else $(CYGPATH_W) '$(srcdir)/src/enigma/main.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/main.Tpo $(DEPDIR)/main.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='src/enigma/main.c' object='main.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o main.obj `if test -f 'src/enigma/main.c'; then $(CYGPATH_W) 'src/enigma/main.c'; else $(CYGPATH_W) '$(srcdir)/src/enigma/main.c'; fi`
 
 enigma.o: src/enigma/enigma.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT enigma.o -MD -MP -MF $(DEPDIR)/enigma.Tpo -c -o enigma.o `test -f 'src/enigma/enigma.c' || echo '$(srcdir)/'`src/enigma/enigma.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/enigma.Tpo $(DEPDIR)/enigma.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT enigma.o -MD -MP -MF $(DEPDIR)/enigma.Tpo -c -o enigma.o `test -f 'src/enigma/enigma.c' || echo '$(srcdir)/'`src/enigma/enigma.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/enigma.Tpo $(DEPDIR)/enigma.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='src/enigma/enigma.c' object='enigma.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o enigma.o `test -f 'src/enigma/enigma.c' || echo '$(srcdir)/'`src/enigma/enigma.c
 
 enigma.obj: src/enigma/enigma.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT enigma.obj -MD -MP -MF $(DEPDIR)/enigma.Tpo -c -o enigma.obj `if test -f 'src/enigma/enigma.c'; then $(CYGPATH_W) 'src/enigma/enigma.c'; else $(CYGPATH_W) '$(srcdir)/src/enigma/enigma.c'; fi`
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/enigma.Tpo $(DEPDIR)/enigma.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT enigma.obj -MD -MP -MF $(DEPDIR)/enigma.Tpo -c -o enigma.obj `if test -f 'src/enigma/enigma.c'; then $(CYGPATH_W) 'src/enigma/enigma.c'; else $(CYGPATH_W) '$(srcdir)/src/enigma/enigma.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/enigma.Tpo $(DEPDIR)/enigma.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='src/enigma/enigma.c' object='enigma.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o enigma.obj `if test -f 'src/enigma/enigma.c'; then $(CYGPATH_W) 'src/enigma/enigma.c'; else $(CYGPATH_W) '$(srcdir)/src/enigma/enigma.c'; fi`
 
 patchboard.o: src/enigma/patchboard.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT patchboard.o -MD -MP -MF $(DEPDIR)/patchboard.Tpo -c -o patchboard.o `test -f 'src/enigma/patchboard.c' || echo '$(srcdir)/'`src/enigma/patchboard.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/patchboard.Tpo $(DEPDIR)/patchboard.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT patchboard.o -MD -MP -MF $(DEPDIR)/patchboard.Tpo -c -o patchboard.o `test -f 'src/enigma/patchboard.c' || echo '$(srcdir)/'`src/enigma/patchboard.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/patchboard.Tpo $(DEPDIR)/patchboard.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='src/enigma/patchboard.c' object='patchboard.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o patchboard.o `test -f 'src/enigma/patchboard.c' || echo '$(srcdir)/'`src/enigma/patchboard.c
 
 patchboard.obj: src/enigma/patchboard.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT patchboard.obj -MD -MP -MF $(DEPDIR)/patchboard.Tpo -c -o patchboard.obj `if test -f 'src/enigma/patchboard.c'; then $(CYGPATH_W) 'src/enigma/patchboard.c'; else $(CYGPATH_W) '$(srcdir)/src/enigma/patchboard.c'; fi`
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/patchboard.Tpo $(DEPDIR)/patchboard.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT patchboard.obj -MD -MP -MF $(DEPDIR)/patchboard.Tpo -c -o patchboard.obj `if test -f 'src/enigma/patchboard.c'; then $(CYGPATH_W) 'src/enigma/patchboard.c'; else $(CYGPATH_W) '$(srcdir)/src/enigma/patchboard.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/patchboard.Tpo $(DEPDIR)/patchboard.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='src/enigma/patchboard.c' object='patchboard.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o patchboard.obj `if test -f 'src/enigma/patchboard.c'; then $(CYGPATH_W) 'src/enigma/patchboard.c'; else $(CYGPATH_W) '$(srcdir)/src/enigma/patchboard.c'; fi`
 
 reflector.o: src/enigma/reflector.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT reflector.o -MD -MP -MF $(DEPDIR)/reflector.Tpo -c -o reflector.o `test -f 'src/enigma/reflector.c' || echo '$(srcdir)/'`src/enigma/reflector.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/reflector.Tpo $(DEPDIR)/reflector.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT reflector.o -MD -MP -MF $(DEPDIR)/reflector.Tpo -c -o reflector.o `test -f 'src/enigma/reflector.c' || echo '$(srcdir)/'`src/enigma/reflector.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/reflector.Tpo $(DEPDIR)/reflector.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='src/enigma/reflector.c' object='reflector.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o reflector.o `test -f 'src/enigma/reflector.c' || echo '$(srcdir)/'`src/enigma/reflector.c
 
 reflector.obj: src/enigma/reflector.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT reflector.obj -MD -MP -MF $(DEPDIR)/reflector.Tpo -c -o reflector.obj `if test -f 'src/enigma/reflector.c'; then $(CYGPATH_W) 'src/enigma/reflector.c'; else $(CYGPATH_W) '$(srcdir)/src/enigma/reflector.c'; fi`
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/reflector.Tpo $(DEPDIR)/reflector.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT reflector.obj -MD -MP -MF $(DEPDIR)/reflector.Tpo -c -o reflector.obj `if test -f 'src/enigma/reflector.c'; then $(CYGPATH_W) 'src/enigma/reflector.c'; else $(CYGPATH_W) '$(srcdir)/src/enigma/reflector.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/reflector.Tpo $(DEPDIR)/reflector.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='src/enigma/reflector.c' object='reflector.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o reflector.obj `if test -f 'src/enigma/reflector.c'; then $(CYGPATH_W) 'src/enigma/reflector.c'; else $(CYGPATH_W) '$(srcdir)/src/enigma/reflector.c'; fi`
 
 rotor.o: src/enigma/rotor.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT rotor.o -MD -MP -MF $(DEPDIR)/rotor.Tpo -c -o rotor.o `test -f 'src/enigma/rotor.c' || echo '$(srcdir)/'`src/enigma/rotor.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/rotor.Tpo $(DEPDIR)/rotor.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT rotor.o -MD -MP -MF $(DEPDIR)/rotor.Tpo -c -o rotor.o `test -f 'src/enigma/rotor.c' || echo '$(srcdir)/'`src/enigma/rotor.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/rotor.Tpo $(DEPDIR)/rotor.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='src/enigma/rotor.c' object='rotor.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o rotor.o `test -f 'src/enigma/rotor.c' || echo '$(srcdir)/'`src/enigma/rotor.c
 
 rotor.obj: src/enigma/rotor.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT rotor.obj -MD -MP -MF $(DEPDIR)/rotor.Tpo -c -o rotor.obj `if test -f 'src/enigma/rotor.c'; then $(CYGPATH_W) 'src/enigma/rotor.c'; else $(CYGPATH_W) '$(srcdir)/src/enigma/rotor.c'; fi`
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/rotor.Tpo $(DEPDIR)/rotor.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT rotor.obj -MD -MP -MF $(DEPDIR)/rotor.Tpo -c -o rotor.obj `if test -f 'src/enigma/rotor.c'; then $(CYGPATH_W) 'src/enigma/rotor.c'; else $(CYGPATH_W) '$(srcdir)/src/enigma/rotor.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/rotor.Tpo $(DEPDIR)/rotor.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='src/enigma/rotor.c' object='rotor.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o rotor.obj `if test -f 'src/enigma/rotor.c'; then $(CYGPATH_W) 'src/enigma/rotor.c'; else $(CYGPATH_W) '$(srcdir)/src/enigma/rotor.c'; fi`
 
 util.o: src/enigma/util.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT util.o -MD -MP -MF $(DEPDIR)/util.Tpo -c -o util.o `test -f 'src/enigma/util.c' || echo '$(srcdir)/'`src/enigma/util.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/util.Tpo $(DEPDIR)/util.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT util.o -MD -MP -MF $(DEPDIR)/util.Tpo -c -o util.o `test -f 'src/enigma/util.c' || echo '$(srcdir)/'`src/enigma/util.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/util.Tpo $(DEPDIR)/util.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='src/enigma/util.c' object='util.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o util.o `test -f 'src/enigma/util.c' || echo '$(srcdir)/'`src/enigma/util.c
 
 util.obj: src/enigma/util.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT util.obj -MD -MP -MF $(DEPDIR)/util.Tpo -c -o util.obj `if test -f 'src/enigma/util.c'; then $(CYGPATH_W) 'src/enigma/util.c'; else $(CYGPATH_W) '$(srcdir)/src/enigma/util.c'; fi`
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/util.Tpo $(DEPDIR)/util.Po
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT util.obj -MD -MP -MF $(DEPDIR)/util.Tpo -c -o util.obj `if test -f 'src/enigma/util.c'; then $(CYGPATH_W) 'src/enigma/util.c'; else $(CYGPATH_W) '$(srcdir)/src/enigma/util.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/util.Tpo $(DEPDIR)/util.Po
+@am__fastdepCC_FALSE@	$(AM_V_CC) @AM_BACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='src/enigma/util.c' object='util.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o util.obj `if test -f 'src/enigma/util.c'; then $(CYGPATH_W) 'src/enigma/util.c'; else $(CYGPATH_W) '$(srcdir)/src/enigma/util.c'; fi`

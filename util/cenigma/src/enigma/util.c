@@ -39,7 +39,7 @@ bool word_in_alphabeth(const char *alphabet, const char *word)
 	for (i = 0; i < len; i++)
 		if (!strchr(alphabet, word[i])) {
 			if (debug)
-				fprintf(stderr, "Char %c not in alphabet!\n", word[i]);
+				fprintf(stderr, _("Char %c not in alphabet!\n"), word[i]);
 			return false;
 		}
 

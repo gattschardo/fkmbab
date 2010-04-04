@@ -20,7 +20,7 @@ int main(int argc, char **argv)
 				break;
 			case 'o':
 				if(!(out = fopen(optarg, "w"))) {
-					perror("Error opening output file");
+					perror(_("Error opening output file"));
 					exit(EXIT_FAILURE);
 				}
 				break;
@@ -35,7 +35,7 @@ int main(int argc, char **argv)
 				exit(EXIT_SUCCESS);
 				break;
 			default:
-				fprintf(stderr, "Unsupported option %c (%d)\n", opt, opt);
+				fprintf(stderr, _("Unsupported option %c (%d)\n"), opt, opt);
 				usage(argv[0]);
 				exit(EXIT_FAILURE);
 		}
@@ -43,7 +43,7 @@ int main(int argc, char **argv)
 
 	Enigma *e = buildfromfile(config);
 	if (!e) {
-		fprintf(stderr, "Could not parse config file %s\n", config);
+		fprintf(stderr, _("Could not parse config file %s\n"), config);
 		exit(EXIT_FAILURE);
 	}
 
@@ -53,7 +53,7 @@ int main(int argc, char **argv)
 			|| (argv[optind][0] == '-' && argv[optind][1] == 0)) {
 			in = stdin;
 		} else if (!(in = fopen(argv[optind], "r"))) {
-			fprintf(stderr, "Error opening input file %s: ",
+			fprintf(stderr, _("Error opening input file %s: "),
 					argv[optind]);
 			perror(0);
 			continue;
@@ -102,14 +102,14 @@ Enigma *buildfromfile(const char *file)
 			continue;
 		else if (strncmp(p, "alphabet", 8) == 0) {
 			if (rotor_count || patchboardconf || reflectorconf ) {
-				fprintf(stderr, "Alphabet must be specified before all"
-						" other components of the enigma\n");
+				fprintf(stderr, _("Alphabet must be specified before all"
+						" other components of the enigma\n"));
 				return 0;
 			}
 
 			p = eat_space(p + 8);
 			if (debug) {
-				printf("Found alphabet: %s\n", p);
+				printf(_("Found alphabet: %s\n"), p);
 			}
 			alph_len = strlen(p);
 			alphabet = malloc(sizeof(char) * alph_len);
@@ -120,12 +120,12 @@ Enigma *buildfromfile(const char *file)
 				continue;
 			p = eat_space(p + 5);
 			if (debug) {
-				printf("Found rotor: %s\n", p);
+				printf(_("Found rotor: %s\n"), p);
 			}
 			rotor_permutations[rotor_count] = malloc(sizeof(char) * alph_len);
 			strncpy(rotor_permutations[rotor_count], p, alph_len);
 			if (debug)
-				printf("permutation is %s, ", rotor_permutations[rotor_count]);
+				printf(_("permutation is %s, "), rotor_permutations[rotor_count]);
 
 			p = eat_space(p + alph_len);
 			rotor_ticks[rotor_count] = *(p++);
@@ -133,39 +133,39 @@ Enigma *buildfromfile(const char *file)
 			p = eat_space(p);
 			rotor_stars[rotor_count] = *p;
 			if (debug)
-				printf("tick is %c, start is %c\n", rotor_ticks[rotor_count],
+				printf(_("tick is %c, start is %c\n"), rotor_ticks[rotor_count],
 						rotor_stars[rotor_count]);
 
 			rotor_count++;
 		} else if (strncmp(p, "reflector", 9) == 0) {
 			if (reflectorconf) {
-				fprintf(stderr, "Duplicate reflector configuration\n");
+				fprintf(stderr, _("Duplicate reflector configuration\n"));
 				return 0;
 			}
 			p = eat_space(p + 9);
 			if (debug)
-				printf("Found reflector: %s\n", p);
+				printf(_("Found reflector: %s\n"), p);
 			reflectorconf = malloc(sizeof(char) * alph_len);
 			strncpy(reflectorconf, p, alph_len);
 		} else if (strncmp(p, "patchboard", 10) == 0) {
 			if (patchboardconf) {
-				fprintf(stderr, "Duplicate patchboard configuration\n");
+				fprintf(stderr, _("Duplicate patchboard configuration\n"));
 				return 0;
 			}
 			p = eat_space(p + 10);
 			if (debug)
-				printf("Found patchboard: %s\n", p);
+				printf(_("Found patchboard: %s\n"), p);
 			patchboardconf = malloc(sizeof(char) * alph_len);
 			strncpy(patchboardconf, p, alph_len);
 		} else {
-			fprintf(stderr, "Illegal input in %s: %s", file, buf);
+			fprintf(stderr, _("Illegal input in %s: %s"), file, buf);
 			return 0;
 		}
 	}
 
 	/* FIXME */
 	if (!reflectorconf) {
-		fprintf(stderr, "Incomplete configuration, no reflector specified\n");
+		fprintf(stderr, _("Incomplete configuration, no reflector specified\n"));
 		return 0;
 	}
 
@@ -184,7 +184,7 @@ Enigma *buildfromfile(const char *file)
 			string_to_int(alphabet, reflectorconf), rotor_count, intperms,
 			intticks, intstars);
 	if (!e) {
-		fprintf(stderr, "Enigma creation failed\n");
+		fprintf(stderr, _("Enigma creation failed\n"));
 		return 0;
 	}
 
@@ -207,14 +207,14 @@ char *eat_space(char *p)
 
 void usage(const char *progname)
 {
-	printf("Usage: %s [-d] [-u] [-h] [-c configfile] [-o outfile]"
-			" [file1] [...] [fileN]\n", progname);
-	puts("Where:\n"
+	printf(_("Usage: %s [-d] [-u] [-h] [-c configfile] [-o outfile]"
+			" [file1] [...] [fileN]\n", progname));
+	puts(_("Where:\n"
 			"-d\tprint debug information\n"
 			"-u\tconvert all lower case characters to upper case\n"
 			"-h\tprint this help and exit\n"
-			"-o\twrite output to file");
-	printf("-c\tread enigma configuration from configfile (default %s)\n",
+			"-o\twrite output to file"));
+	printf(_("-c\tread enigma configuration from configfile (default %s)\n"),
 			DEFRCFILE);
 
 	return;
