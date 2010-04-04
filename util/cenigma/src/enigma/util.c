@@ -3,7 +3,7 @@
  * Utility functions for enigma
  */
 
-#include "util.h"
+#include "enigma/util.h"
 
 const char *alphabet;
 

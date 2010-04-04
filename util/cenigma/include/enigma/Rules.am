@@ -1,0 +1,8 @@
+
+EXTRA_DIST +=				\
+	include/enigma/main.h		\
+	include/enigma/enigma.h		\
+	include/enigma/patchboard.h	\
+	include/enigma/reflector.h	\
+	include/enigma/rotor.h		\
+	include/enigma/util.h

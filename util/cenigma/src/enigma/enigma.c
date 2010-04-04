@@ -1,6 +1,6 @@
 /* enigma.c */
 
-#include "enigma.h"
+#include "enigma/enigma.h"
 
 Enigma *enigma_create(int *patchboardconf, int *reflectorconf, int rotor_count,
 		int **rotor_permutations, int *rotor_ticks, int *rotor_stars)

@@ -1,6 +1,6 @@
 /* patchboard.c */
 
-#include "reflector.h"
+#include "enigma/reflector.h"
 
 /*
 Reflector *reflector_create(void)

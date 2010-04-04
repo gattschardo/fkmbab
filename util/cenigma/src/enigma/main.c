@@ -1,6 +1,6 @@
 /* main.c */
 
-#include "main.h"
+#include "enigma/main.h"
 
 bool debug;
 

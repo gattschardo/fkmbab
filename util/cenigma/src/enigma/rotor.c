@@ -1,6 +1,6 @@
 /* rotor.c */
 
-#include "rotor.h"
+#include "enigma/rotor.h"
 
 Rotor *rotor_create(const int *configuration, int tickpos, int position,
 		Rotor *next)

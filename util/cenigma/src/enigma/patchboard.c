@@ -1,6 +1,6 @@
 /* patchboard.c */
 
-#include "patchboard.h"
+#include "enigma/patchboard.h"
 
 /*
 Patchboard *patchboard_create(void)

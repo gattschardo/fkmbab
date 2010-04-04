@@ -1,0 +1,9 @@
+bin_PROGRAMS += enigma
+
+enigma_SOURCES = 		\
+	src/enigma/main.c	\
+	src/enigma/enigma.c	\
+	src/enigma/patchboard.c	\
+	src/enigma/reflector.c	\
+	src/enigma/rotor.c	\
+	src/enigma/util.c
