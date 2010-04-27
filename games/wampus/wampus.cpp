@@ -87,7 +87,12 @@ void printIntro()
   "don't fall in or you'll never\n"
   "get home.\n\n";
 
-  std::cout << introString;
+  std::cout << "Want the story (y or n)? ";
+  std::cout.flush();
+  char c;
+  std::cin >> c;
+  if (c == 'y')
+    std::cout << introString;
 }
 
 int shoot(int shots)
