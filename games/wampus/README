@@ -1,0 +1,6 @@
+This game is a C++ implementation of the game with the same name as
+it appears in ``The A to Z book of computer games -- 26 exciting and
+instructive game programs -- ready-to-run on any BASIC computer.'' by
+Thomas C. McIntire (TAB BOOKS/No. 1062, (c) 1979). It tries to copy the
+behaviour of the old BASIC version rather closely. Console-input is not
+thoroughly error-checked and can crash the game.

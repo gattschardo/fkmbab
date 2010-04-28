@@ -1,4 +1,4 @@
-CXXFLAGS := -g
+CXXFLAGS := -g -ansi
 target := wampus
 objs := chamber.o
 
