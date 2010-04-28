@@ -50,16 +50,22 @@ void gameLoop(Chamber **cave)
   int currentCave = rand() % 20;
 
   while (alive && !won) {
-    currentCave = promptMove(cave, currentCave);
-
-    //alive = (shots = shoot(shots)) ? true : false;
-
-    won = cave[currentCave]->haveExit();
-    
     if (cave[currentCave]->haveWampus())
       alive = shootOrRun(cave, &currentCave, &shots);
-  }
 
+    if (cave[currentCave]->haveBats())
+      currentCave = bats(cave, currentCave);
+
+    if (cave[currentCave]->havePit()) {
+      alive = false;
+      pitMsg();
+    }
+
+    currentCave = promptMove(cave, currentCave);
+
+    won = cave[currentCave]->haveExit();
+  }
+    
   if (won)
     std::cout << "Congratulations, you found your way out!" << std::endl;
 }
@@ -168,4 +174,22 @@ void moveWampus(Chamber **cave, int chamber)
     cave[cave[chamber]->getExit(0)]->putWampus();
   else
     cave[cave[chamber]->getExit(1)]->putWampus();
+}
+
+int
+bats(Chamber **cave, int chamber)
+{
+  int next = cave[chamber]->getExit();
+
+  std::cout << "There are bats in here, so" << std::endl
+      << "you run to " << next + 1 << std::endl;
+
+  return next;
+}
+
+void
+pitMsg()
+{
+  std::cout << "You fell into the pit," << std::endl
+      << "so long ..." << std::endl;
 }

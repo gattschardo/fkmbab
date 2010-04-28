@@ -22,6 +22,8 @@ public:
 
   bool haveExit();
   bool haveWampus();
+  bool haveBats();
+  bool havePit();
 
   int getExit(int i = 0);
 };

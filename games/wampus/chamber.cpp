@@ -66,3 +66,15 @@ Chamber::haveWampus()
 {
   return hasWampus;
 }
+
+bool
+Chamber::haveBats()
+{
+  return hasBats;
+}
+
+bool
+Chamber::havePit()
+{
+  return isPit;
+}
