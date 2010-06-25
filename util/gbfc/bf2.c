@@ -66,46 +66,74 @@ char *subst(char *s)
 void compile(FILE *in, FILE *out)
 {
  int c, i, indent;
+ int j, count, last;
 
  indent = 1;
 #define INDENT for(i = 0; i < indent; i++) fputc(' ', out);
 
+ last = EOF;
  while ((c = fgetc(in)) != EOF) {
-  switch(c) {
-  case '>':
-   INDENT
-   fputs("++p;\n", out);
-   break;
-  case '<':
-   INDENT
-   fputs("--p;\n", out);
-   break;
-  case '+':
-   INDENT
-   fputs("++*p;\n", out);
-   break;
-  case '-':
-   INDENT
-   fputs("--*p;\n", out);
-   break;
-  case '.':
-   INDENT
-   fputs("putchar(*p);\n", out);
-   break;
-  case ',':
-   INDENT
-   fputs("*p = getchar();\n", out);
-   break;
-  case '[':
-   INDENT
-   fputs("while (*p) {\n", out);
-   indent++;
-   break;
-  case ']':
-   indent--;
-   INDENT
-   fputs("}\n", out);
-   break;
+  if (c != last) {
+   switch(last) {
+   case '>':
+    INDENT
+    if (count == 1)
+      fputs("++p;\n", out);
+    else
+      fprintf(out, "p  += %d;\n", count);
+    break;
+   case '<':
+    INDENT
+    if (count == 1)
+      fputs("--p;\n", out);
+    else
+      fprintf(out, "p  -= %d;\n", count);
+    break;
+   case '+':
+    INDENT
+    if (count == 1)
+      fputs("++*p;\n", out);
+    else
+      fprintf(out, "*p += %d;\n", count);
+    break;
+   case '-':
+    INDENT
+    if (count == 1)
+      fputs("--*p;\n", out);
+    else
+      fprintf(out, "*p -= %d;\n", count);
+    break;
+   case '.':
+    for(j = 0; j < count; j++) {
+     INDENT
+     fputs("putchar(*p);\n", out);
+    }
+    break;
+   case ',':
+    for(j = 0; j < count; j++) {
+     INDENT
+     fputs("*p = getchar();\n", out);
+    }
+    break;
+   case '[':
+    for(j = 0; j < count; j++) {
+     INDENT
+     fputs("while (*p) {\n", out);
+     indent++;
+    }
+    break;
+   case ']':
+    for(j = 0; j < count; j++) {
+     indent--;
+     INDENT
+     fputs("}\n", out);
+    }
+    break;
+   }
+   last = c;
+   count = 1;
+  } else {
+   count++;
   }
  }
 
