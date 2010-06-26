@@ -10,13 +10,15 @@
 #include <stdlib.h>
 
 #define DOT '.'
+#define HEAPSIZE_STR "30000"
+#define OUTBUFSIZE_STR "1000"
 
 enum output_t { C_OUTPUT, AS_OUTPUT };
 
 const char *c_head =
  "#include <stdio.h>\n" \
  "int main(void) {\n" \
- " int a[5000];\n" \
+ " int a[" HEAPSIZE_STR "];\n" \
  " int *p = a;\n";
 
 const char *c_tail =
@@ -35,8 +37,8 @@ const char *as_tail =
  " int $0x80\n" \
  "\n" \
  ".bss\n" \
- ".lcomm heap, 2000\n" \
- ".lcomm buf, 2000\n";
+ ".lcomm heap, " HEAPSIZE_STR "\n" \
+ ".lcomm buf, " OUTBUFSIZE_STR "\n";
 
 char *subst(char *s, enum output_t format);
 void compile(FILE *in, FILE *out, enum output_t format);
@@ -249,17 +251,15 @@ void compile(FILE *in, FILE *out, enum output_t format)
     }
     break;
    case ',':
+    /* multiple reads are the same as one read */
     if (format == C_OUTPUT) {
-     for(j = 0; j < count; j++) {
-      INDENT
-      fputs("*p = getchar();\n", out);
-     }
+     INDENT
+     fputs("*p = getchar();\n", out);
     } else {
-     /* multiple reads are the same as one read */
      INDENT
      fputs("mov $1, %edx\n", out);
      INDENT
-     fputs("mov %eax, %ebx\n", out);
+     fputs("mov %eax, %ecx\n", out);
      INDENT
      fputs("mov $0, %ebx\n", out);
      INDENT
@@ -316,6 +316,6 @@ void compile(FILE *in, FILE *out, enum output_t format)
  }
 
  if (indent != 1) {
-  fputs("Syntax error: mismatched [ ]", stderr);
+  fputs("Syntax error: mismatched [ ]\n", stderr);
  }
 }
