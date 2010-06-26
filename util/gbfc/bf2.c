@@ -133,6 +133,7 @@ char *subst(char *s, enum output_t format)
 
 void compile(FILE *in, FILE *out, enum output_t format)
 {
+ int go;
  int c, i, indent;
  int j, count, last;
  int loop;
@@ -144,8 +145,12 @@ void compile(FILE *in, FILE *out, enum output_t format)
  loop = 0;
  sp = stck;
  last = EOF;
- while ((c = fgetc(in)) != EOF) {
-  if (c != last) {
+ go = 1;
+ while (go) {
+  if ((c = fgetc(in)) == EOF)
+   go = 0;
+
+  if (c == EOF || c != last && strchr(",.<>[]+-", c)) {
    switch(last) {
    case '>':
     INDENT
@@ -310,9 +315,11 @@ void compile(FILE *in, FILE *out, enum output_t format)
    }
    last = c;
    count = 1;
-  } else {
+  } else if (last == c) {
    count++;
-  }
+  } /*else {
+   fprintf(stderr, "Ignoring %c\n", c);
+  }*/
  }
 
  if (indent != 1) {
