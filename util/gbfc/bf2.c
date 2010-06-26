@@ -97,9 +97,13 @@ int main(int argc, char **argv)
 char *subst(char *s, enum output_t format)
 {
  char *t, *dot;
+ int baselen;
 
  dot = strrchr(s, DOT);
- int baselen = dot - s;
+ if (dot)
+  baselen = dot - s;
+ else
+  baselen = strlen(s);
 
  t = malloc(sizeof(char) * (baselen + 3));
 
