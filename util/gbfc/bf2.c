@@ -43,18 +43,35 @@ void compile(FILE *in, FILE *out, enum output_t format);
 int main(int argc, char **argv)
 {
  FILE *in, *out;
+ int i;
  char *name_i, *name_o;
  enum output_t format;
 
  format = AS_OUTPUT;
- while (--argc) {
-  name_i = argv[argc];
+ i = 0;
+ while (++i < argc) {
+  name_i = argv[i];
 
-  name_o = subst(name_i, format);
+  if (name_i[0] == '-') {
+   if (name_i[1] == '\0') {
+    in  = stdin;
+    out = stdout;
+   } else {
+    if (name_i[1] == 'c' && name_i[2] == '\0')
+     format = C_OUTPUT;
+    else if (name_i[1] == 'a' && name_i[2] == 's' && name_i[3] == '\0')
+     format = AS_OUTPUT;
+    else
+     fprintf(stderr, "Ignoring unknown option %s\n", name_i+1);
+    continue;
+   }
+  } else {
+   name_o = subst(name_i, format);
 
-  in = fopen(name_i, "r");
-  out = fopen(name_o, "w");
-  free(name_o);
+   in = fopen(name_i, "r");
+   out = fopen(name_o, "w");
+   free(name_o);
+  }
 
   if (format == C_OUTPUT)
    fputs(c_head, out);
@@ -68,8 +85,10 @@ int main(int argc, char **argv)
   else
    fputs(as_tail, out);
 
-  fclose(in);
-  fclose(out);
+  if (in != stdin) {
+   fclose(in);
+   fclose(out);
+  }
  }
 
  return 0;
@@ -282,6 +301,6 @@ void compile(FILE *in, FILE *out, enum output_t format)
  }
 
  if (indent != 1) {
-  puts("Syntax error: mismatched [ ]");
+  fputs("Syntax error: mismatched [ ]", stderr);
  }
 }
