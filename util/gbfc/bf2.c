@@ -1,5 +1,6 @@
 /* bf2.c
- * brainfuck to c compiler
+ *
+ * brainfuck compiler supporting C and x86 ASM output.
  *
  * (c) R. Molitor, 2010
  */
@@ -61,7 +62,17 @@ int main(int argc, char **argv)
      format = C_OUTPUT;
     else if (name_i[1] == 'a' && name_i[2] == 's' && name_i[3] == '\0')
      format = AS_OUTPUT;
-    else
+    else if (name_i[1] == 'h' && name_i[2] == '\0') {
+     printf("%s usage:\n" \
+            "%s [-c] infile1 [-as] [infile2 ...]\n" \
+            "where\n"
+            "-c\tswitches to C output (in infile.c)\n" \
+            "-as\tswitches to x86 gas output (in infile.s)\n" \
+            "-h\tprints this help and exits.\n\n" \
+            "You can have as many infiles as you need and may switch between C and Assembler\n"
+            "output for each file individually.\n", argv[0], argv[0]);
+     return 0;
+    } else
      fprintf(stderr, "Ignoring unknown option %s\n", name_i+1);
     continue;
    }
