@@ -25,7 +25,7 @@ const char *as_head =
  ".text\n" \
  ".global _start\n" \
  "_start:\n" \
- " mov $HEAP, %eax\n";
+ " mov $heap, %eax\n";
 
 const char *as_tail =
  " mov $0, %ebx\n" \
@@ -34,7 +34,8 @@ const char *as_tail =
  " int $0x80\n" \
  "\n" \
  ".bss\n" \
- ".lcomm HEAP, 2000\n";
+ ".lcomm heap, 2000\n" \
+ ".lcomm buf, 2000\n";
 
 char *subst(char *s, enum output_t format);
 void compile(FILE *in, FILE *out, enum output_t format);
@@ -98,12 +99,14 @@ void compile(FILE *in, FILE *out, enum output_t format)
 {
  int c, i, indent;
  int j, count, last;
- int loop_head, loop_end;
+ int loop;
+ int stck[1000], *sp;
 
  indent = 1;
 #define INDENT for(i = 0; i < indent; i++) fputc(' ', out);
 
- loop_head = loop_end = 0;
+ loop = 0;
+ sp = stck;
  last = EOF;
  while ((c = fgetc(in)) != EOF) {
   if (c != last) {
@@ -172,13 +175,35 @@ void compile(FILE *in, FILE *out, enum output_t format)
      }
     } else {
      INDENT
+     if (count > 1) {
+      fputs("mov (%eax), %bl\n", out);
+      INDENT
+      fprintf(out, "mov $%d, %%edx\n", count);
+      INDENT
+      fputs("mov $buf, %ecx\n", out);
+      fprintf(out, "output%d:\n", loop);
+      indent++;
+      INDENT
+      fputs("mov %bl, (%ecx)\n", out);
+      INDENT
+      fputs("inc %ecx\n", out);
+      INDENT
+      fputs("dec %edx\n", out);
+      INDENT
+      fprintf(out, "jz end_output%d\n", loop);
+      INDENT
+      fprintf(out, "jmp output%d\n", loop);
+      fprintf(out, "end_output%d:\n", loop++);
+      indent--;
+      INDENT
+      fprintf(out, "sub $%d, %%ecx\n", count);
+     } else {
+      fputs("mov %eax, %ecx\n", out);
+     }
+     INDENT
      fprintf(out, "mov $%d, %%edx\n", count);
      INDENT
-     fputs("mov %eax, %ecx\n", out);
-     INDENT
      fputs("mov $1, %ebx\n", out);
-     INDENT
-     fprintf(out, "add $%d, %%eax\n", count - 1);
      INDENT
      fputs("push %eax\n", out);
      INDENT
@@ -196,14 +221,13 @@ void compile(FILE *in, FILE *out, enum output_t format)
       fputs("*p = getchar();\n", out);
      }
     } else {
+     /* multiple reads are the same as one read */
      INDENT
-     fprintf(out, "mov $%d, %%edx\n", count);
+     fputs("mov $1, %edx\n", out);
      INDENT
-     fputs("mov %eax, %ecx\n", out);
+     fputs("mov %eax, %ebx\n", out);
      INDENT
      fputs("mov $0, %ebx\n", out);
-     INDENT
-     fprintf(out, "add $%d, %%eax\n", count - 1);
      INDENT
      fputs("push %eax\n", out);
      INDENT
@@ -221,15 +245,17 @@ void compile(FILE *in, FILE *out, enum output_t format)
       fputs("while (*p) {\n", out);
       indent++;
      } else {
-      fprintf(out, "loop%d:\n", loop_head++);
-      /*indent++;*/
+      fprintf(out, "loop%d:\n", loop);
+      *sp++ = loop;
+      indent++;
+      INDENT
       fputs("mov $0, %ebx\n", out);
       INDENT
       fputs("movb (%eax), %bl\n", out);
       INDENT
       fputs("cmp $0, %bl\n", out);
       INDENT
-      fprintf(out, "je end%d\n", loop_head - 1);
+      fprintf(out, "je end%d\n", loop++);
      }
     }
     break;
@@ -241,8 +267,9 @@ void compile(FILE *in, FILE *out, enum output_t format)
       fputs("}\n", out);
      } else {
       INDENT
-      fprintf(out, "jmp loop%d\n", loop_head-1);
-      fprintf(out, "end%d:\n", loop_head-1);
+      fprintf(out, "jmp loop%d\n", *--sp);
+      fprintf(out, "end%d:\n", *sp);
+      indent--;
      }
     }
     break;
