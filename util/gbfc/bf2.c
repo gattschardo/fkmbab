@@ -6,6 +6,7 @@
  */
 
 #include <stdio.h>
+#include <errno.h>
 #include <string.h>
 #include <stdlib.h>
 
@@ -81,8 +82,17 @@ int main(int argc, char **argv)
   } else {
    name_o = subst(name_i, format);
 
-   in = fopen(name_i, "r");
-   out = fopen(name_o, "w");
+   if(!(in = fopen(name_i, "r"))) {
+    fprintf(stderr,"%s: cannot open \"%s\" for reading: %s\n",
+            argv[0], name_i, strerror(errno));
+    continue;
+   };
+   if(!(out = fopen(name_o, "w"))) {
+    fprintf(stderr,"%s: cannot open \"%s\" for writing: %s\n",
+            argv[0], name_o, strerror(errno));
+    free(name_o);
+    continue;
+   }
    free(name_o);
   }
 

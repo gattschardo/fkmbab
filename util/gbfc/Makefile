@@ -8,6 +8,7 @@ test: test.b
 	ld -o $@ $@.o
 
 all: $(target)
+	chmod +x compile.sh
 
 clean:
 	$(RM) $(target)
