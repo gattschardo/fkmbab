@@ -13,25 +13,26 @@
 #define DOT '.'
 #define HEAPSIZE_STR "30000"
 #define OUTBUFSIZE_STR "1000"
+#define STCKSIZ 1000
 
 enum output_t { C_OUTPUT, AS_OUTPUT };
 
-const char *c_head =
+static const char *c_head =
  "#include <stdio.h>\n" \
  "int main(void) {\n" \
  " int a[" HEAPSIZE_STR "];\n" \
  " int *p = a;\n";
 
-const char *c_tail =
+static const char *c_tail =
  " return 0;\n}\n";
 
-const char *as_head =
+static const char *as_head =
  ".text\n" \
  ".global _start\n" \
  "_start:\n" \
  " mov $heap, %eax\n";
 
-const char *as_tail =
+static const char *as_tail =
  " mov $0, %ebx\n" \
  " mov %ebx, %eax\n" \
  " inc %eax\n" \
@@ -41,8 +42,8 @@ const char *as_tail =
  ".lcomm heap, " HEAPSIZE_STR "\n" \
  ".lcomm buf, " OUTBUFSIZE_STR "\n";
 
-char *subst(char *s, enum output_t format);
-void compile(FILE *in, FILE *out, enum output_t format);
+static char *subst(char *s, enum output_t format);
+static void compile(FILE *in, FILE *out, enum output_t format);
 
 int main(int argc, char **argv)
 {
@@ -117,7 +118,7 @@ int main(int argc, char **argv)
  return 0;
 }
 
-char *subst(char *s, enum output_t format)
+static char *subst(char *s, enum output_t format)
 {
  char *t, *dot;
  int baselen;
@@ -128,7 +129,10 @@ char *subst(char *s, enum output_t format)
  else
   baselen = strlen(s);
 
- t = malloc(sizeof(char) * (baselen + 3));
+ if (!(t = malloc(sizeof(char) * (baselen + 3)))) {
+  perror("bf2");
+  exit(1);
+ };
 
  strncpy(t, s, baselen);
  t[baselen++] = DOT;
@@ -141,13 +145,16 @@ char *subst(char *s, enum output_t format)
  return t;
 }
 
-void compile(FILE *in, FILE *out, enum output_t format)
+static void compile(FILE *in, FILE *out, enum output_t format)
 {
  int go;
  int c, i, indent;
  int j, count, last;
  int loop;
- int stck[1000], *sp;
+ int stck[STCKSIZ], *sp;
+
+ for (i = 0; i < STCKSIZ; i++)
+  stck[i] = -1;
 
  indent = 1;
 #define INDENT for(i = 0; i < indent; i++) fputc(' ', out);
@@ -155,7 +162,7 @@ void compile(FILE *in, FILE *out, enum output_t format)
  loop = 0;
  sp = stck;
  last = EOF;
- go = 1;
+ count = go = 1;
  while (go) {
   if ((c = fgetc(in)) == EOF)
    go = 0;
@@ -315,10 +322,14 @@ void compile(FILE *in, FILE *out, enum output_t format)
       INDENT
       fputs("}\n", out);
      } else {
+      if (*sp == -1) {
+       fputs("Error: ] before [!\n", stderr);
+      } else {
       INDENT
-      fprintf(out, "jmp loop%d\n", *--sp);
-      fprintf(out, "end%d:\n", *sp);
-      indent--;
+       fprintf(out, "jmp loop%d\n", *--sp);
+       fprintf(out, "end%d:\n", *sp);
+       indent--;
+      }
      }
     }
     break;
