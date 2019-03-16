@@ -13,27 +13,29 @@
 #define QUEEN '*'
 #define EMPTY '.'
 
-typedef struct {
+struct board_s {
 	int n;
 	int last;
 	int *board;
-} board;
+};
 
-static NODISCARD board init_board(int n);
-static NODISCARD bool solve_board(board *b);
-static NODISCARD bool is_valid(board const *b);
-static NODISCARD char *format(board const *b);
-static void destroy_board(board const *b);
+typedef struct board_s board_t;
 
-static void add_queen(board *b);
-static NODISCARD bool remove_queen(board *b);
-static NODISCARD bool push_queen(board *b);
+static NODISCARD board_t init_board(int n);
+static NODISCARD bool solve_board(board_t *b);
+static NODISCARD bool is_valid(board_t const *b);
+static NODISCARD char *format(board_t const *b);
+static void destroy_board(board_t const *b);
 
-static board init_board(int n)
+static void add_queen(board_t *b);
+static NODISCARD bool remove_queen(board_t *b);
+static NODISCARD bool push_queen(board_t *b);
+
+static board_t init_board(int n)
 {
 	assert(n >= 0);
 
-	board b;
+	board_t b;
 	b.n = n;
 	b.last = -1;
 	b.board = (int*)malloc((size_t)b.n*sizeof(int));
@@ -45,14 +47,14 @@ static board init_board(int n)
 	return b;
 }
 
-static void destroy_board(board const *b)
+static void destroy_board(board_t const *b)
 {
 	free(b->board);
 }
 
 char *solve(int n)
 {
-	board b = init_board(n);
+	board_t b = init_board(n);
 
 	char *solution = solve_board(&b) ? format(&b) : FAIL;
 
@@ -61,7 +63,7 @@ char *solve(int n)
 	return solution;
 }
 
-static bool solve_board(board *b)
+static bool solve_board(board_t *b)
 {
 	while (b->last + 1 < b->n) {
 		// add new queen
@@ -80,7 +82,7 @@ static bool solve_board(board *b)
 	return true;
 }
 
-static bool is_valid(board const *b)
+static bool is_valid(board_t const *b)
 {
 	int i;
 	for (i = 0; i <= b->last; i++) {
@@ -107,14 +109,14 @@ static bool is_valid(board const *b)
 	return true;
 }
 
-static void add_queen(board *b)
+static void add_queen(board_t *b)
 {
 	++b->last;
 	assert(b->last < b->n);
 	b->board[b->last] = 0;
 }
 
-static bool remove_queen(board *b)
+static bool remove_queen(board_t *b)
 {
 	if (b->last < 1) {
 		b->last--;
@@ -127,7 +129,7 @@ static bool remove_queen(board *b)
 	}
 }
 
-static bool push_queen(board *b)
+static bool push_queen(board_t *b)
 {
 	if (b->board[b->last]+1 < b->n) {
 		b->board[b->last]++;
@@ -139,7 +141,7 @@ static bool push_queen(board *b)
 	}
 }
 
-static char *format(board const *b)
+static char *format(board_t const *b)
 {
 	char *ptr, *solution = (char*)calloc(sizeof(char),(size_t)b->n*(size_t)(b->n+1)+1);
 	int i,j;
