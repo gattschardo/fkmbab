@@ -19,11 +19,11 @@ typedef struct {
 	int *board;
 } board;
 
-static bool isvalid(board const *b);
+static bool is_valid(board const *b);
 
-static bool addqueen(board *b, int pos);
-static bool removequeen(board *b);
-static bool pushqueen(board *b);
+static bool add_queen(board *b, int pos);
+static bool remove_queen(board *b);
+static bool push_queen(board *b);
 static char *format(board const *b);
 
 char *solve(int n)
@@ -38,23 +38,23 @@ char *solve(int n)
 	for (i = 0; i < b->n; i++)
 		b->board[i] = -1;
 
-	bool hopeleft = true;
-	while (b->last + 1 < b->n && hopeleft) {
+	bool hope_left = true;
+	while (b->last + 1 < b->n && hope_left) {
 		// add new queen
-		addqueen(b, 0);
+		add_queen(b, 0);
 
 		// push it forward until it stands ok or it hits the bottom of the board
-		while (!isvalid(b) && pushqueen(b))
+		while (!is_valid(b) && push_queen(b))
 			;
 
-		while (!isvalid(b))
-			while (!pushqueen(b))
-				if (!removequeen(b))
-					hopeleft = false;
+		while (!is_valid(b))
+			while (!push_queen(b))
+				if (!remove_queen(b))
+					hope_left = false;
 	}
 
 	char *solution;
-	if (hopeleft) {
+	if (hope_left) {
 		solution = format(b);
 	}
 	else
@@ -63,7 +63,7 @@ char *solve(int n)
 	return solution;
 }
 
-static bool isvalid(board const *b)
+static bool is_valid(board const *b)
 {
 	int i;
 	for (i = 0; i <= b->last; i++) {
@@ -86,7 +86,7 @@ static bool isvalid(board const *b)
 	return true;
 }
 
-static bool addqueen(board *b, int pos)
+static bool add_queen(board *b, int pos)
 {
 	if (++(b->last) < b->n) {
 		b->board[b->last] = pos;
@@ -95,7 +95,7 @@ static bool addqueen(board *b, int pos)
 		return false;
 }
 
-static bool removequeen(board *b)
+static bool remove_queen(board *b)
 {
 	if (b->last < 1) {
 		b->last--;
@@ -108,7 +108,7 @@ static bool removequeen(board *b)
 	}
 }
 
-static bool pushqueen(board *b)
+static bool push_queen(board *b)
 {
 	if (b->board[b->last]+1 < b->n) {
 		b->board[b->last]++;
