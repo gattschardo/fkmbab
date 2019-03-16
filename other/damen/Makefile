@@ -16,3 +16,8 @@ shell: $(SOBJS)
 
 clean:
 	$(RM) $(TARGS) $(BOBJS) $(SOBJS)
+
+test: batch
+	./test.sh
+
+.phony: all clean test
