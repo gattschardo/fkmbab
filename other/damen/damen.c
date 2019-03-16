@@ -5,6 +5,7 @@
 
 #include <stdbool.h>
 #include <stdlib.h>
+#include <string.h>
 #include <assert.h>
 
 #include "damen.h"
@@ -36,11 +37,9 @@ static board_t *init_board(int n)
 	board_t *b = (board_t *)malloc(sizeof(board_t));
 	b->n = n;
 	b->last = -1;
-	b->board = (int*)malloc((size_t)b->n*sizeof(int));
-
-	int i;
-	for (i = 0; i < b->n; i++)
-		b->board[i] = -1;
+	size_t l = (size_t)n;
+	b->board = (int *)malloc(l * sizeof(int));
+	memset(b->board, -1, l);
 
 	return b;
 }
@@ -84,18 +83,16 @@ static bool solve_board(board_t *b)
 
 static bool is_valid(board_t const *b)
 {
-	int i;
-	for (i = 0; i <= b->last; i++) {
-		int j;
+	for (int i = 0; i <= b->last; i++) {
 
 		// rows
-		for (j = i + 1; j <= b->last; j++)
+		for (int j = i + 1; j <= b->last; j++)
 			// row to the right
 			if (b->board[i] == b->board[j])
 				return false;
 
 		// diagonals
-		for (j = 1; j + i <= b->last; j++) {
+		for (int j = 1; j + i <= b->last; j++) {
 			// diagonal below/right
 			if (b->board[i + j] == b->board[i] + j)
 				return false;
@@ -143,9 +140,8 @@ static bool push_queen(board_t *b)
 
 void print_board(FILE *stream, board_t const *b)
 {
-	int i,j;
-	for (i = 0; i < b->n; i++) {
-		for (j = 0; j < b->n; j++)
+	for (int i = 0; i < b->n; i++) {
+		for (int j = 0; j < b->n; j++)
 			fputc(b->board[i] == j ? QUEEN : EMPTY, stream);
 		fputc('\n', stream);
 	}
