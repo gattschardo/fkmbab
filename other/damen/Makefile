@@ -14,4 +14,4 @@ damen: $(DOBJS)
 shell: $(SOBJS)
 
 clean:
-	rm -rf $(TARGS) $(OBJS)
+	rm -rf $(TARGS) $(DOBJS) $(SOBJS)
