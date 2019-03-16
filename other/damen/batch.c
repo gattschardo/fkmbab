@@ -1,4 +1,4 @@
-/* damen.c
+/* batch.c
  *
  * (c) fkmsft, 2010
  */
@@ -12,12 +12,9 @@
 
 int main(int argc, char **argv)
 {
-	int n = 8;
-	if (argc > 1)
-		n = atoi(argv[1]);
+	int const n = argc > 1 ? atoi(argv[1]) : 8;
 
-	if (n < 0)
-	{
+	if (n < 0) {
 		fprintf(stderr, "negative board size (%d) is not supported\n", n);
 		return 1;
 	}

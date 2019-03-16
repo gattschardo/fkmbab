@@ -1,4 +1,4 @@
-/* util.c
+/* damen.c
  *
  * (c) fkmsft, 2010
  */
@@ -54,8 +54,9 @@ board_t *solve(int n)
 {
 	board_t *b = init_board(n);
 
-	if (solve_board(b))
+	if (solve_board(b)) {
 		return b;
+	}
 
 	destroy_board(b);
 
@@ -69,14 +70,17 @@ static bool solve_board(board_t *b)
 		add_queen(b);
 
 		// push it forward until it stands ok or it hits the bottom of the board
-		while (!is_valid(b) && push_queen(b))
+		while (!is_valid(b) && push_queen(b)) {
 			;
+		}
 
-		while (!is_valid(b))
-			while (!push_queen(b))
+		while (!is_valid(b)) {
+			while (!push_queen(b)) {
 				if (!remove_queen(b)) {
 					return false;
 				}
+			}
+		}
 	}
 	return true;
 }
@@ -86,20 +90,24 @@ static bool is_valid(board_t const *b)
 	for (int i = 0; i <= b->last; i++) {
 
 		// rows
-		for (int j = i + 1; j <= b->last; j++)
+		for (int j = i + 1; j <= b->last; j++) {
 			// row to the right
-			if (b->board[i] == b->board[j])
+			if (b->board[i] == b->board[j]) {
 				return false;
+			}
+		}
 
 		// diagonals
 		for (int j = 1; j + i <= b->last; j++) {
 			// diagonal below/right
-			if (b->board[i + j] == b->board[i] + j)
+			if (b->board[i + j] == b->board[i] + j) {
 				return false;
+			}
 
 			// diagonal above/right
-			if (b->board[i + j] == b->board[i] - j)
+			if (b->board[i + j] == b->board[i] - j) {
 				return false;
+			}
 		}
 	}
 
@@ -132,8 +140,7 @@ static bool push_queen(board_t *b)
 		b->board[b->last]++;
 		return true;
 	}
-	else
-	{
+	else {
 		return false;
 	}
 }
@@ -141,8 +148,9 @@ static bool push_queen(board_t *b)
 void print_board(FILE *stream, board_t const *b)
 {
 	for (int i = 0; i < b->n; i++) {
-		for (int j = 0; j < b->n; j++)
+		for (int j = 0; j < b->n; j++) {
 			fputc(b->board[i] == j ? QUEEN : EMPTY, stream);
+		}
 		fputc('\n', stream);
 	}
 }

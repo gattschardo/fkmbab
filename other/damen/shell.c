@@ -29,11 +29,13 @@ int main(void)
 				print_board(stdout, answer);
 				destroy_board(answer);
 			}
-			else
+			else {
 				puts(FAIL);
+			}
 		}
-		else 
+		else {
 			puts("Please enter an integer > 0, press ^D to exit");
+		}
 
 		fputs(PROMPT, stdout);
 	}
