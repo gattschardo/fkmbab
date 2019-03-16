@@ -124,6 +124,7 @@
 #pragma GCC diagnostic error "-Wsizeof-pointer-memaccess"
 #pragma GCC diagnostic error "-Wstack-protector"
 #pragma GCC diagnostic error "-Wstrict-aliasing=3"
+#pragma GCC diagnostic error "-Wstrict-overflow=5"
 #pragma GCC diagnostic error "-Wstrict-prototypes"
 #pragma GCC diagnostic error "-Wstringop-overflow=4"
 #pragma GCC diagnostic error "-Wstringop-truncation"

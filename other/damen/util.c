@@ -80,7 +80,7 @@ bool addqueen(board *b, int pos)
 
 bool removequeen(board *b)
 {
-	if ((b->last)-1 < 0) {
+	if (b->last < 1) {
 		b->last--;
 		return false;
 	}
