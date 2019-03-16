@@ -3,11 +3,28 @@
  * (c) fkmsft, 2010
  */
 
+#include <stdbool.h>
 #include <stdlib.h>
 #include <assert.h>
 
 #include "damen.h"
 #include "warn.h"
+
+#define QUEEN '*'
+#define EMPTY '.'
+
+typedef struct {
+	int n;
+	int last;
+	int *board;
+} board;
+
+static bool isvalid(board *b);
+
+static bool addqueen(board *b, int pos);
+static bool removequeen(board *b);
+static bool pushqueen(board *b);
+static char *tostr(board *b);
 
 char *solve(int n)
 {
@@ -46,7 +63,7 @@ char *solve(int n)
 	return solution;
 }
 
-bool isvalid(board *b)
+static bool isvalid(board *b)
 {
 	int i;
 	for (i = 0; i <= b->last; i++) {
@@ -69,7 +86,7 @@ bool isvalid(board *b)
 	return true;
 }
 
-bool addqueen(board *b, int pos)
+static bool addqueen(board *b, int pos)
 {
 	if (++(b->last) < b->n) {
 		b->board[b->last] = pos;
@@ -78,7 +95,7 @@ bool addqueen(board *b, int pos)
 		return false;
 }
 
-bool removequeen(board *b)
+static bool removequeen(board *b)
 {
 	if (b->last < 1) {
 		b->last--;
@@ -91,7 +108,7 @@ bool removequeen(board *b)
 	}
 }
 
-bool pushqueen(board *b)
+static bool pushqueen(board *b)
 {
 	if (b->board[b->last]+1 < b->n) {
 		b->board[b->last]++;
@@ -101,7 +118,7 @@ bool pushqueen(board *b)
 		return false;
 }
 
-char *tostr(board *b)
+static char *tostr(board *b)
 {
 	char *ptr, *solution = (char*)calloc(sizeof(char),(size_t)b->n*(size_t)(b->n+1)+1);
 	int i,j;
