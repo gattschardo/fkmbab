@@ -5,6 +5,8 @@
 
 #pragma once
 
+#include "nodiscard.h"
+
 #define FAIL "No solution"
 
-char *solve(int n);
+NODISCARD char *solve(int n);

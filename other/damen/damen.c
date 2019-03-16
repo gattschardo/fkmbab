@@ -19,15 +19,15 @@ typedef struct {
 	int *board;
 } board;
 
-static board init_board(int n);
-static bool solve_board(board *b);
-static bool is_valid(board const *b);
-static char *format(board const *b);
+static NODISCARD board init_board(int n);
+static NODISCARD bool solve_board(board *b);
+static NODISCARD bool is_valid(board const *b);
+static NODISCARD char *format(board const *b);
 static void destroy_board(board const *b);
 
-static bool add_queen(board *b, int pos);
-static bool remove_queen(board *b);
-static bool push_queen(board *b);
+static void add_queen(board *b);
+static NODISCARD bool remove_queen(board *b);
+static NODISCARD bool push_queen(board *b);
 
 static board init_board(int n)
 {
@@ -65,7 +65,7 @@ static bool solve_board(board *b)
 {
 	while (b->last + 1 < b->n) {
 		// add new queen
-		add_queen(b, 0);
+		add_queen(b);
 
 		// push it forward until it stands ok or it hits the bottom of the board
 		while (!is_valid(b) && push_queen(b))
@@ -107,14 +107,11 @@ static bool is_valid(board const *b)
 	return true;
 }
 
-static bool add_queen(board *b, int pos)
+static void add_queen(board *b)
 {
 	++b->last;
-	if (b->last < b->n) {
-		b->board[b->last] = pos;
-		return true;
-	} else
-		return false;
+	assert(b->last < b->n);
+	b->board[b->last] = 0;
 }
 
 static bool remove_queen(board *b)

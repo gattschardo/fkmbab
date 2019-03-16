@@ -149,6 +149,7 @@
 #pragma GCC diagnostic error "-Wunknown-pragmas"
 #pragma GCC diagnostic error "-Wunsuffixed-float-constants"
 #pragma GCC diagnostic error "-Wunused"
+#pragma GCC diagnostic error "-Wunused-result"
 #pragma GCC diagnostic error "-Wvarargs"
 #pragma GCC diagnostic error "-Wvariadic-macros"
 #pragma GCC diagnostic error "-Wvector-operation-performance"
