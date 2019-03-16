@@ -6,6 +6,7 @@
 #include <stdlib.h>
 
 #include "damen.h"
+#include "warn.h"
 
 char *solve(unsigned int n)
 {

@@ -1,6 +1,6 @@
 CFLAGS = -g
 
-HEADERS = damen.h
+HEADERS = damen.h warn.h
 DOBJS = damen.o util.o
 SOBJS = shell.o util.o
 TARGS = damen shell

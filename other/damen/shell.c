@@ -7,6 +7,7 @@
 #include <ctype.h>
 
 #include "damen.h"
+#include "warn.h"
 
 #define PROMPT ("NQueens> ")
 

@@ -8,6 +8,7 @@
 #include <string.h>
 
 #include "damen.h"
+#include "warn.h"
 
 int main(int argc, char **argv)
 {
