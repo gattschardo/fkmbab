@@ -24,8 +24,15 @@ int main(int argc, char **argv)
 			input = getchar();
 		}
 		printf("Got %d\n", n);
-		if (n > 0)
-			puts(solve(n));
+		if (n > 0) {
+			board_t *answer = solve(n);
+			if (answer) {
+				print_board(stdout, answer);
+				destroy_board(answer);
+			}
+			else
+				puts(FAIL);
+		}
 		else 
 			puts("Please enter an integer > 0, press ^D to exit");
 

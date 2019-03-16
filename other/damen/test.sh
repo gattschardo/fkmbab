@@ -16,7 +16,7 @@ test_safety()
 {
 	for i in `seq -2 9`
 	do
-		valgrind --error-exitcode=69 ./batch $i
+		valgrind --leak-check=yes --error-exitcode=69 ./batch $i
 		if [ $? -eq 69 ]
 		then
 			die "valgrind error on $i"

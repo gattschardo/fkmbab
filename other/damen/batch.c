@@ -22,11 +22,15 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
-	char *answer = solve(n);
-	puts(answer);
-
-        if (strcmp(answer, FAIL))
-          free(answer);
+	board_t *answer = solve(n);
+	if (answer) {
+		print_board(stdout, answer);
+		puts("");
+		destroy_board(answer);
+	}
+	else {
+		puts(FAIL);
+	}
 
 	return 0;
 }

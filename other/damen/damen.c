@@ -21,46 +21,46 @@ struct board_s {
 
 typedef struct board_s board_t;
 
-static NODISCARD board_t init_board(int n);
+static NODISCARD board_t *init_board(int n);
 static NODISCARD bool solve_board(board_t *b);
 static NODISCARD bool is_valid(board_t const *b);
-static NODISCARD char *format(board_t const *b);
-static void destroy_board(board_t const *b);
 
 static void add_queen(board_t *b);
 static NODISCARD bool remove_queen(board_t *b);
 static NODISCARD bool push_queen(board_t *b);
 
-static board_t init_board(int n)
+static board_t *init_board(int n)
 {
 	assert(n >= 0);
 
-	board_t b;
-	b.n = n;
-	b.last = -1;
-	b.board = (int*)malloc((size_t)b.n*sizeof(int));
+	board_t *b = (board_t *)malloc(sizeof(board_t));
+	b->n = n;
+	b->last = -1;
+	b->board = (int*)malloc((size_t)b->n*sizeof(int));
 
 	int i;
-	for (i = 0; i < b.n; i++)
-		b.board[i] = -1;
+	for (i = 0; i < b->n; i++)
+		b->board[i] = -1;
 
 	return b;
 }
 
-static void destroy_board(board_t const *b)
+void destroy_board(board_t *b)
 {
 	free(b->board);
+	free(b);
 }
 
-char *solve(int n)
+board_t *solve(int n)
 {
-	board_t b = init_board(n);
+	board_t *b = init_board(n);
 
-	char *solution = solve_board(&b) ? format(&b) : FAIL;
+	if (solve_board(b))
+		return b;
 
-	destroy_board(&b);
+	destroy_board(b);
 
-	return solution;
+	return 0;
 }
 
 static bool solve_board(board_t *b)
@@ -141,18 +141,12 @@ static bool push_queen(board_t *b)
 	}
 }
 
-static char *format(board_t const *b)
+void print_board(FILE *stream, board_t const *b)
 {
-	char *ptr, *solution = (char*)calloc(sizeof(char),(size_t)b->n*(size_t)(b->n+1)+1);
 	int i,j;
-	ptr = solution;
-
 	for (i = 0; i < b->n; i++) {
 		for (j = 0; j < b->n; j++)
-			*(ptr++) = (b->board[i] == j)? QUEEN : EMPTY;
-		*(ptr++) = '\n';
+			fputc(b->board[i] == j ? QUEEN : EMPTY, stream);
+		fputc('\n', stream);
 	}
-	*ptr = '\0';
-
-	return solution;
 }
