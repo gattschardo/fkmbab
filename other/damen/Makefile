@@ -1,18 +1,18 @@
 CFLAGS = -g
 
 HEADERS = damen.h warn.h
-DOBJS = damen.o util.o
-SOBJS = shell.o util.o
-TARGS = damen shell
+BOBJS = batch.o damen.o
+SOBJS = shell.o damen.o
+TARGS = batch shell
 
 all: $(TARGS)
 
 %.o: %.c $(HEADERS)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-damen: $(DOBJS)
+batch: $(BOBJS)
 
 shell: $(SOBJS)
 
 clean:
-	$(RM) $(TARGS) $(DOBJS) $(SOBJS)
+	$(RM) $(TARGS) $(BOBJS) $(SOBJS)
