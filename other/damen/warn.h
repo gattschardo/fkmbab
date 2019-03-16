@@ -9,6 +9,7 @@
 #pragma GCC diagnostic error "-Wbool-compare"
 #pragma GCC diagnostic error "-Wbuiltin-declaration-mismatch"
 #pragma GCC diagnostic error "-Wbuiltin-macro-redefined"
+#pragma GCC diagnostic error "-Wc++-compat"
 #pragma GCC diagnostic error "-Wcast-align=strict"
 #pragma GCC diagnostic error "-Wcast-function-type"
 #pragma GCC diagnostic error "-Wcast-qual"

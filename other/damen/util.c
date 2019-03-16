@@ -10,10 +10,10 @@
 
 char *solve(unsigned int n)
 {
-	board *b = malloc(sizeof(board));
+	board *b = (board*)malloc(sizeof(board));
 	b->n = n;
 	b->last = -1;
-	b->board = malloc(b->n*sizeof(int));
+	b->board = (int*)malloc(b->n*sizeof(int));
 
 	int i;
 	for (i = 0; i < b->n; i++)
@@ -101,7 +101,7 @@ bool pushqueen(board *b)
 
 char *tostr(board *b)
 {
-	char *ptr, *solution = calloc(sizeof(char),b->n*(b->n+1)+1);
+	char *ptr, *solution = (char*)calloc(sizeof(char),b->n*(b->n+1)+1);
 	int i,j;
 	ptr = solution;
 
