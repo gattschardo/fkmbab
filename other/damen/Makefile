@@ -8,10 +8,11 @@ TARGS = damen shell
 all: $(TARGS)
 
 %.o: %.c $(HEADERS)
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 damen: $(DOBJS)
 
 shell: $(SOBJS)
 
 clean:
-	rm -rf $(TARGS) $(DOBJS) $(SOBJS)
+	$(RM) $(TARGS) $(DOBJS) $(SOBJS)
