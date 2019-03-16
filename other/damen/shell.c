@@ -29,4 +29,5 @@ int main(int argc, char **argv)
 
 		fputs(PROMPT, stdout);
 	}
+	fputc('\n', stdout);
 }
