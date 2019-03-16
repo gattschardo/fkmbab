@@ -19,16 +19,18 @@ typedef struct {
 	int *board;
 } board;
 
+static board *init_board(int n);
 static bool is_valid(board const *b);
+static char *format(board const *b);
 
 static bool add_queen(board *b, int pos);
 static bool remove_queen(board *b);
 static bool push_queen(board *b);
-static char *format(board const *b);
 
-char *solve(int n)
+static board *init_board(int n)
 {
 	assert(n >= 0);
+
 	board *b = (board*)malloc(sizeof(board));
 	b->n = n;
 	b->last = -1;
@@ -37,6 +39,13 @@ char *solve(int n)
 	int i;
 	for (i = 0; i < b->n; i++)
 		b->board[i] = -1;
+
+	return b;
+}
+
+char *solve(int n)
+{
+	board *b = init_board(n);
 
 	bool hope_left = true;
 	while (b->last + 1 < b->n && hope_left) {
