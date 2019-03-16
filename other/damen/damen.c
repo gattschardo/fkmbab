@@ -20,6 +20,7 @@ typedef struct {
 } board;
 
 static board init_board(int n);
+static bool solve_board(board *b);
 static bool is_valid(board const *b);
 static char *format(board const *b);
 static void destroy_board(board const *b);
@@ -53,34 +54,30 @@ char *solve(int n)
 {
 	board b = init_board(n);
 
-	bool hope_left = true;
-	while (b.last + 1 < b.n && hope_left) {
-		// add new queen
-		add_queen(&b, 0);
-
-		// push it forward until it stands ok or it hits the bottom of the board
-		while (!is_valid(&b) && push_queen(&b))
-			;
-
-		while (!is_valid(&b))
-			while (!push_queen(&b))
-				if (!remove_queen(&b)) {
-					hope_left = false;
-					goto out;
-				}
-	}
-
-	char *solution;
-out:
-	if (hope_left) {
-		solution = format(&b);
-	}
-	else
-		solution = FAIL;
+	char *solution = solve_board(&b) ? format(&b) : FAIL;
 
 	destroy_board(&b);
 
 	return solution;
+}
+
+static bool solve_board(board *b)
+{
+	while (b->last + 1 < b->n) {
+		// add new queen
+		add_queen(b, 0);
+
+		// push it forward until it stands ok or it hits the bottom of the board
+		while (!is_valid(b) && push_queen(b))
+			;
+
+		while (!is_valid(b))
+			while (!push_queen(b))
+				if (!remove_queen(b)) {
+					return false;
+				}
+	}
+	return true;
 }
 
 static bool is_valid(board const *b)
