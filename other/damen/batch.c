@@ -25,7 +25,7 @@ int main(int argc, char **argv)
 		destroy_board(answer);
 	}
 	else {
-		puts(FAIL);
+		puts(fail);
 	}
 
 	return 0;

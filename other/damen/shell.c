@@ -9,13 +9,13 @@
 #include "damen.h"
 #include "warn.h"
 
-#define PROMPT "NQueens> "
+static char const *const prompt = "NQueens> ";
 
 int main(void)
 {
 	int input = EOF;
 
-	fputs(PROMPT, stdout);
+	fputs(prompt, stdout);
 	while((input = getchar()) != EOF) {
 		int n = 0;
 		while (isdigit(input)) {
@@ -30,14 +30,14 @@ int main(void)
 				destroy_board(answer);
 			}
 			else {
-				puts(FAIL);
+				puts(fail);
 			}
 		}
 		else {
 			puts("Please enter an integer > 0, press ^D to exit");
 		}
 
-		fputs(PROMPT, stdout);
+		fputs(prompt, stdout);
 	}
 	fputc('\n', stdout);
 }

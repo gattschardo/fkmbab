@@ -11,8 +11,7 @@
 #include "damen.h"
 #include "warn.h"
 
-#define QUEEN '*'
-#define EMPTY '.'
+enum { Queen = '*', Empty = '.', };
 
 struct board_s {
 	int n;
@@ -20,7 +19,7 @@ struct board_s {
 	int *board;
 };
 
-typedef struct board_s board_t;
+char const *const fail = "No solution";
 
 static NODISCARD board_t *init_board(int n);
 static NODISCARD bool solve_board(board_t *b);
@@ -149,7 +148,7 @@ void print_board(FILE *stream, board_t const *b)
 {
 	for (int i = 0; i < b->n; i++) {
 		for (int j = 0; j < b->n; j++) {
-			fputc(b->board[i] == j ? QUEEN : EMPTY, stream);
+			fputc(b->board[i] == j ? Queen : Empty, stream);
 		}
 		fputc('\n', stream);
 	}
