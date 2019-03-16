@@ -18,7 +18,7 @@ typedef struct {
 	int *board;
 } board;
 
-char *solve(unsigned int n);
+char *solve(int n);
 bool isvalid(board *b);
 
 bool addqueen(board *b, int pos);

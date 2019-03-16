@@ -4,16 +4,18 @@
  */
 
 #include <stdlib.h>
+#include <assert.h>
 
 #include "damen.h"
 #include "warn.h"
 
-char *solve(unsigned int n)
+char *solve(int n)
 {
+	assert(n >= 0);
 	board *b = (board*)malloc(sizeof(board));
 	b->n = n;
 	b->last = -1;
-	b->board = (int*)malloc(b->n*sizeof(int));
+	b->board = (int*)malloc((size_t)b->n*sizeof(int));
 
 	int i;
 	for (i = 0; i < b->n; i++)
@@ -101,7 +103,7 @@ bool pushqueen(board *b)
 
 char *tostr(board *b)
 {
-	char *ptr, *solution = (char*)calloc(sizeof(char),b->n*(b->n+1)+1);
+	char *ptr, *solution = (char*)calloc(sizeof(char),(size_t)b->n*(size_t)(b->n+1)+1);
 	int i,j;
 	ptr = solution;
 
