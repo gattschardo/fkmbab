@@ -18,7 +18,8 @@ int main(int argc, char **argv)
 	while((input = getchar()) != EOF) {
 		n = 0;
 		while (isdigit(input)) {
-			n += n*10 + input - '0';
+			n *= 10;
+			n += input - '0';
 			input = getchar();
 		}
 		printf("Got %d\n", n);
