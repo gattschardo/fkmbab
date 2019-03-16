@@ -19,12 +19,12 @@ typedef struct {
 	int *board;
 } board;
 
-static bool isvalid(board *b);
+static bool isvalid(board const *b);
 
 static bool addqueen(board *b, int pos);
 static bool removequeen(board *b);
 static bool pushqueen(board *b);
-static char *tostr(board *b);
+static char *format(board const *b);
 
 char *solve(int n)
 {
@@ -55,7 +55,7 @@ char *solve(int n)
 
 	char *solution;
 	if (hopeleft) {
-		solution = tostr(b);
+		solution = format(b);
 	}
 	else
 		solution = FAIL;
@@ -63,7 +63,7 @@ char *solve(int n)
 	return solution;
 }
 
-static bool isvalid(board *b)
+static bool isvalid(board const *b)
 {
 	int i;
 	for (i = 0; i <= b->last; i++) {
@@ -118,7 +118,7 @@ static bool pushqueen(board *b)
 		return false;
 }
 
-static char *tostr(board *b)
+static char *format(board const *b)
 {
 	char *ptr, *solution = (char*)calloc(sizeof(char),(size_t)b->n*(size_t)(b->n+1)+1);
 	int i,j;
