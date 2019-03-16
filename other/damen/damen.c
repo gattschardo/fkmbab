@@ -19,7 +19,7 @@ typedef struct {
 	int *board;
 } board;
 
-static board *init_board(int n);
+static board init_board(int n);
 static bool is_valid(board const *b);
 static char *format(board const *b);
 
@@ -27,44 +27,44 @@ static bool add_queen(board *b, int pos);
 static bool remove_queen(board *b);
 static bool push_queen(board *b);
 
-static board *init_board(int n)
+static board init_board(int n)
 {
 	assert(n >= 0);
 
-	board *b = (board*)malloc(sizeof(board));
-	b->n = n;
-	b->last = -1;
-	b->board = (int*)malloc((size_t)b->n*sizeof(int));
+	board b;
+	b.n = n;
+	b.last = -1;
+	b.board = (int*)malloc((size_t)b.n*sizeof(int));
 
 	int i;
-	for (i = 0; i < b->n; i++)
-		b->board[i] = -1;
+	for (i = 0; i < b.n; i++)
+		b.board[i] = -1;
 
 	return b;
 }
 
 char *solve(int n)
 {
-	board *b = init_board(n);
+	board b = init_board(n);
 
 	bool hope_left = true;
-	while (b->last + 1 < b->n && hope_left) {
+	while (b.last + 1 < b.n && hope_left) {
 		// add new queen
-		add_queen(b, 0);
+		add_queen(&b, 0);
 
 		// push it forward until it stands ok or it hits the bottom of the board
-		while (!is_valid(b) && push_queen(b))
+		while (!is_valid(&b) && push_queen(&b))
 			;
 
-		while (!is_valid(b))
-			while (!push_queen(b))
-				if (!remove_queen(b))
+		while (!is_valid(&b))
+			while (!push_queen(&b))
+				if (!remove_queen(&b))
 					hope_left = false;
 	}
 
 	char *solution;
 	if (hope_left) {
-		solution = format(b);
+		solution = format(&b);
 	}
 	else
 		solution = FAIL;
