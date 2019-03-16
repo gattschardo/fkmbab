@@ -9,21 +9,20 @@
 #include "damen.h"
 #include "warn.h"
 
-#define PROMPT ("NQueens> ")
+#define PROMPT "NQueens> "
 
-int main(int argc, char **argv)
+int main(void)
 {
-	int input, n;
+	int input = EOF;
 
 	fputs(PROMPT, stdout);
 	while((input = getchar()) != EOF) {
-		n = 0;
+		int n = 0;
 		while (isdigit(input)) {
 			n *= 10;
 			n += input - '0';
 			input = getchar();
 		}
-		printf("Got %d\n", n);
 		if (n > 0) {
 			board_t *answer = solve(n);
 			if (answer) {
