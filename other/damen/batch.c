@@ -25,7 +25,6 @@ int main(int argc, char **argv)
 	board_t *answer = solve(n);
 	if (answer) {
 		print_board(stdout, answer);
-		puts("");
 		destroy_board(answer);
 	}
 	else {
