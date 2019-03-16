@@ -86,16 +86,20 @@ static bool is_valid(board const *b)
 	for (i = 0; i <= b->last; i++) {
 		int j;
 
-		// Zeilen
+		// rows
 		for (j = i + 1; j <= b->last; j++)
-			if (b->board[i] == b->board[j]) // zeile rechts
+			// row to the right
+			if (b->board[i] == b->board[j])
 				return false;
 
-		// Diagonalen
+		// diagonals
 		for (j = 1; j + i <= b->last; j++) {
-			if (b->board[i + j] == b->board[i] + j) // dia unten rechts
+			// diagonal below/right
+			if (b->board[i + j] == b->board[i] + j)
 				return false;
-		    if (b->board[i + j] == b->board[i] - j) // dia oben rechts
+
+			// diagonal above/right
+			if (b->board[i + j] == b->board[i] - j)
 				return false;
 		}
 	}
